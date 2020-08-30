@@ -9,9 +9,17 @@ class SongsController < ApplicationController
 
   def new
     @song = Song.new
+    @genres = Genre.all
+    # @song.note_contents
   end
 
   def create
+    # byebug
+    artist = Artist.find_or_create_by(name: song_params[:artist_name])
+    # Note.create(notes_params)
+
+    # No need for song.create with params, also no permit access in here 
+    # Song.create(content: params[:song][:content], artist: artist)
     @song = Song.new(song_params)
 
     if @song.save
@@ -47,7 +55,12 @@ class SongsController < ApplicationController
   private
 
   def song_params
-    params.require(:song).permit(:title)
+    # params.require(:song).permit(:title, :artist_name, :genre_id)
+    params.require(:song).permit(:title, :artist_name, :genre_id, :note_contents => [] )
+
   end
+
+
 end
 
+ 
